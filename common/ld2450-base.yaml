@@ -589,10 +589,11 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
+          unsigned long current_time = millis();
           if ((millis() - id(mmwave_update_time)) <= 250) { 
             return;
           };
-          id(mmwave_update_time) = millis();
+          id(mmwave_update_time) = current_time;
 
           int16_t p1_x = (uint16_t((bytes[5] << 8) | bytes[4] ));
           if ((bytes[5] & 0x80) >> 7) {
