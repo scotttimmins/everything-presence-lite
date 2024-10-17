@@ -68,6 +68,21 @@ esphome:
       - sensor.template.publish:
           id: zone4_target_count
           state: 0
+      - binary_sensor.template.publish:
+          id: occupancy
+          state: false
+      - binary_sensor.template.publish:
+          id: zone1_occupancy
+          state: false
+      - binary_sensor.template.publish:
+          id: zone2_occupancy
+          state: false
+      - binary_sensor.template.publish:
+          id: zone3_occupancy
+          state: false
+      - binary_sensor.template.publish:
+          id: zone4_occupancy
+          state: false
       - delay: 10s
       - button.press: get_mmwave_firmware
 
