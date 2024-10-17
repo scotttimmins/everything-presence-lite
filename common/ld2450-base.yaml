@@ -953,42 +953,15 @@ uart:
           }
 
           ESP_LOGD("uart", "zone1_count: %d, zone2_count: %d, zone3_count: %d, zone4_count: %d", zone1_count, zone2_count, zone3_count, zone4_count);
-          if (zone1_count > 0) {
-            if (id(zone1_target_count).state != zone1_count) {
-              id(zone1_target_count).publish_state(zone1_count);
-            }
-          } else {
-            if (id(zone1_target_count).state != 0) {
-              id(zone1_target_count).publish_state(0);
-            }
+          if (id(zone1_target_count).state != zone1_count) {
+            id(zone1_target_count).publish_state(zone1_count);
           }
-
-          if (zone2_count > 0) {
-            if (id(zone2_target_count).state != zone2_count) {
-              id(zone2_target_count).publish_state(zone2_count);
-            }
-          } else {
-            if (id(zone2_target_count).state != 0) {
-              id(zone2_target_count).publish_state(0);
-            }
+          if (id(zone2_target_count).state != zone2_count) {
+            id(zone2_target_count).publish_state(zone2_count);
           }
-
-          if (zone3_count > 0) {
-            if (id(zone3_target_count).state != zone3_count) {
-              id(zone3_target_count).publish_state(zone3_count);
-            }
-          } else {
-            if (id(zone3_target_count).state != 0) {
-              id(zone3_target_count).publish_state(0);
-            }
+          if (id(zone3_target_count).state != zone3_count) {
+            id(zone3_target_count).publish_state(zone3_count);
           }
-
-          if (zone4_count > 0) {
-            if (id(zone4_target_count).state != zone4_count) {
-              id(zone4_target_count).publish_state(zone4_count);
-            }
-          } else {
-            if (id(zone4_target_count).state != 0) {
-              id(zone4_target_count).publish_state(0);
-            }
+          if (id(zone4_target_count).state != zone4_count) {
+            id(zone4_target_count).publish_state(zone4_count);
           }
