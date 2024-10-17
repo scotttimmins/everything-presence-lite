@@ -2,7 +2,7 @@ esphome:
   on_boot:
     priority: -100
     then:
-      - delay: 5s
+      - delay: 10s
       - button.press: get_mmwave_firmware
       - binary_sensor.template.publish:
           id: zone1_occupancy
