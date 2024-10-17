@@ -587,6 +587,7 @@ uart:
       - lambda: |-
           static unsigned long mmwave_update_time = 0;
           static int16_t MAX_INT_16 = pow(2, 15); // This causes a warning because of the type conversion however the value is correct
+          static float RADIANS_TO_DEGREES = 180.0 / 3.14159265358979323846;
 
           unsigned long current_time = millis();
           if ((current_time - mmwave_update_time) <= 250) {
@@ -660,8 +661,6 @@ uart:
           }
           int16_t p3_distance_resolution = (uint16_t((bytes[27] << 8) | bytes[26] ));
 
-          const float RADIANS_TO_DEGREES = 180.0 / 3.14159265358979323846;
-
           float p1_angle = atan2(p1_y, p1_x) * RADIANS_TO_DEGREES;
           float p2_angle = atan2(p2_y, p2_x) * RADIANS_TO_DEGREES;
           float p3_angle = atan2(p3_y, p3_x) * RADIANS_TO_DEGREES;
@@ -671,9 +670,10 @@ uart:
           float p3_distance = sqrt(p3_x * p3_x + p3_y * p3_y);
 
           float max_distance = float(id(distance).state) * 10;
-          int installation_angle = int(id(installation_angle_ui).state);
 
           // Extracted for consistency of read values
+          int installation_angle = int(id(installation_angle_ui).state);
+
           int zone1_count = 0;
           int zone1_begin_x_value = id(zone1_begin_x).state;
           int zone1_end_x_value = id(zone1_end_x).state;
@@ -700,8 +700,9 @@ uart:
 
           if (p1_distance > 0 && p1_distance <= max_distance) {
             if (installation_angle != 0) {
-              p1_x = p1_distance * cos((p1_angle - installation_angle)/RADIANS_TO_DEGREES);
-              p1_y = p1_distance * sin((p1_angle - installation_angle)/RADIANS_TO_DEGREES);
+              float p1_adjusted_angle = (p1_angle - installation_angle) / RADIANS_TO_DEGREES;
+              p1_x = p1_distance * cos(p1_adjusted_angle);
+              p1_y = p1_distance * sin(p1_adjusted_angle);
             }
             if ((p1_x >= zone1_begin_x_value && p1_x <= zone1_end_x_value) &&
                 (p1_y >= zone1_begin_y_value && p1_y <= zone1_end_y_value)) {
@@ -769,8 +770,9 @@ uart:
 
           if (p2_distance > 0 && p2_distance <= max_distance) {
             if (installation_angle != 0) {
-              p2_x = p2_distance * cos((p2_angle - installation_angle)/RADIANS_TO_DEGREES);
-              p2_y = p2_distance * sin((p2_angle - installation_angle)/RADIANS_TO_DEGREES);
+              float p2_adjusted_angle = (p2_angle - installation_angle) / RADIANS_TO_DEGREES;
+              p2_x = p2_distance * cos(p2_adjusted_angle);
+              p2_y = p2_distance * sin(p2_adjusted_angle);
             }
             if ((p2_x >= zone1_begin_x_value && p2_x <= zone1_end_x_value) &&
                 (p2_y >= zone1_begin_y_value && p2_y <= zone1_end_y_value)) {
@@ -838,8 +840,9 @@ uart:
 
           if (p3_distance > 0 && p3_distance <= max_distance) {
             if (installation_angle != 0) {
-              p3_x = p3_distance * cos((p3_angle - installation_angle)/RADIANS_TO_DEGREES);
-              p3_y = p3_distance * sin((p3_angle - installation_angle)/RADIANS_TO_DEGREES);
+              float p3_adjusted_angle = (p3_angle - installation_angle) / RADIANS_TO_DEGREES;
+              p3_x = p3_distance * cos(p3_adjusted_angle);
+              p3_y = p3_distance * sin(p3_adjusted_angle);
             }
             if ((p3_x >= zone1_begin_x_value && p3_x <= zone1_end_x_value) &&
                 (p3_y >= zone1_begin_y_value && p3_y <= zone1_end_y_value)) {
