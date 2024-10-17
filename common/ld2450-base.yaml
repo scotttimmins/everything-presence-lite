@@ -588,6 +588,19 @@ uart:
           static unsigned long mmwave_update_time = 0;
           static int16_t MAX_INT_16 = pow(2, 15); // This causes a warning because of the type conversion however the value is correct
           static float RADIANS_TO_DEGREES = 180.0 / 3.14159265358979323846;
+          static int MAX_DUPLICATE_READINGS = 8;
+
+          static int duplicate_p1_count = 0;
+          static int16_t previous_p1_x = 0;
+          static int16_t previous_p1_y = 0;
+
+          static int duplicate_p2_count = 0;
+          static int16_t previous_p2_x = 0;
+          static int16_t previous_p2_y = 0;
+
+          static int duplicate_p3_count = 0;
+          static int16_t previous_p3_x = 0;
+          static int16_t previous_p3_y = 0;
 
           unsigned long current_time = millis();
           if ((current_time - mmwave_update_time) <= 250) {
@@ -617,6 +630,19 @@ uart:
           }
           int16_t p1_distance_resolution = (uint16_t((bytes[11] << 8) | bytes[10] ));
 
+          if ((p1_x == 0 || p1_x != previous_p1_x) &&
+              (p1_y == 0 || p1_y != previous_p1_y)) {
+            duplicate_p1_count = 0;
+            previous_p1_x = p1_x;
+            previous_p1_y = p1_y;
+          } else {
+            duplicate_p1_count += 1;
+            if (duplicate_p1_count > MAX_DUPLICATE_READINGS) {
+              p1_x = 0;
+              p1_y = 0;
+            }
+          }
+
           int16_t p2_x = (uint16_t((bytes[13] << 8) | bytes[12] ));
           if ((bytes[13] & 0x80) >> 7) {
             p2_x -= MAX_INT_16;
@@ -639,6 +665,19 @@ uart:
           }
           int16_t p2_distance_resolution = (uint16_t((bytes[19] << 8) | bytes[18] ));
 
+          if ((p2_x == 0 || p2_x != previous_p2_x) &&
+            (p2_y == 0 || p2_y != previous_p2_y)) {
+            duplicate_p2_count = 0;
+            previous_p2_x = p2_x;
+            previous_p2_y = p2_y;
+          } else {
+            duplicate_p2_count += 1;
+            if (duplicate_p2_count > MAX_DUPLICATE_READINGS) {
+              p2_x = 0;
+              p2_y = 0;
+            }
+          }
+
           int16_t p3_x = (uint16_t((bytes[21] << 8) | bytes[20] ));
           if ((bytes[21] & 0x80) >> 7) {
             p3_x -= MAX_INT_16;
@@ -660,6 +699,19 @@ uart:
             p3_speed = 0 - p3_speed;
           }
           int16_t p3_distance_resolution = (uint16_t((bytes[27] << 8) | bytes[26] ));
+
+          if ((p3_x == 0 || p3_x != previous_p3_x) &&
+            (p3_y == 0 || p3_y != previous_p3_y)) {
+            duplicate_p3_count = 0;
+            previous_p3_x = p3_x;
+            previous_p3_y = p3_y;
+          } else {
+            duplicate_p3_count += 1;
+            if (duplicate_p3_count > MAX_DUPLICATE_READINGS) {
+              p3_x = 0;
+              p3_y = 0;
+            }
+          }
 
           float p1_angle = atan2(p1_y, p1_x) * RADIANS_TO_DEGREES;
           float p2_angle = atan2(p2_y, p2_x) * RADIANS_TO_DEGREES;
