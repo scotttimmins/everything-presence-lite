@@ -2,6 +2,7 @@ esphome:
   on_boot:
     priority: -100
     then:
+      - delay: 5s
       - button.press: get_mmwave_firmware
 
 text_sensor:
