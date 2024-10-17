@@ -1,17 +1,17 @@
 esphome:
-  on_boot: 
+  on_boot:
     priority: -100
     then:
       - button.press: get_mmwave_firmware
       - binary_sensor.template.publish:
           id: zone1_occupancy
-          state: false 
+          state: false
       - binary_sensor.template.publish:
           id: zone2_occupancy
-          state: false 
+          state: false
       - binary_sensor.template.publish:
           id: zone3_occupancy
-          state: false 
+          state: false
       - binary_sensor.template.publish:
           id: zone4_occupancy
           state: false
@@ -28,7 +28,7 @@ button:
     internal: True
     entity_category: config
     disabled_by_default: True
-    on_press: 
+    on_press:
       then:
       - switch.turn_on: mmwave_configuration
       - delay: 1s
@@ -107,7 +107,7 @@ switch:
           id: uart_bus
           data: [0xFD, 0xFC, 0xFB, 0xFA, 0x04, 0x00, 0xA4, 0x00, 0x01, 0x00, 0x04, 0x03, 0x02, 0x01]  # Turn on Bluetooth
       - delay: 2s
-      - button.press: reboot_mmwave_sensor  # Reboot after enabling Bluetooth
+      - button.press: reboot_mmwave_sensor # Reboot after enabling Bluetooth
       - delay: 2s
       - switch.turn_off: mmwave_configuration
 
@@ -118,7 +118,7 @@ switch:
           id: uart_bus
           data: [0xFD, 0xFC, 0xFB, 0xFA, 0x04, 0x00, 0xA4, 0x00, 0x00, 0x00, 0x04, 0x03, 0x02, 0x01]  # Turn off Bluetooth
       - delay: 2s
-      - button.press: reboot_mmwave_sensor  # Reboot after enabling Bluetooth
+      - button.press: reboot_mmwave_sensor # Reboot after enabling Bluetooth
       - delay: 2s
       - switch.turn_off: mmwave_configuration
 
@@ -563,12 +563,12 @@ sensor:
 
 uart:
   id: uart_bus
-  tx_pin: 
+  tx_pin:
     number: GPIO17
     mode:
       input: true
       pullup: true
-  rx_pin: 
+  rx_pin:
     number: GPIO16
     mode:
       input: true
@@ -585,17 +585,17 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
-          static unsigned long mmwave_update_time = 0; 
+          static unsigned long mmwave_update_time = 0;
 
-          unsigned long current_time = millis(); 
-          if ((current_time - mmwave_update_time) <= 250) { 
+          unsigned long current_time = millis();
+          if ((current_time - mmwave_update_time) <= 250) {
             return;
           }
           mmwave_update_time = current_time;
 
           int16_t p1_x = (uint16_t((bytes[5] << 8) | bytes[4] ));
           if ((bytes[5] & 0x80) >> 7) {
-            p1_x -= pow(2, 15); 
+            p1_x -= pow(2, 15);
           } else {
             p1_x = 0 - p1_x; // was 0 - p1_x;
           }
@@ -613,11 +613,11 @@ uart:
           } else {
             p1_speed = 0 - p1_speed;
           }
-          int16_t p1_distance_resolution = (uint16_t((bytes[11] << 8) | bytes[10] )); 
+          int16_t p1_distance_resolution = (uint16_t((bytes[11] << 8) | bytes[10] ));
 
           int16_t p2_x = (uint16_t((bytes[13] << 8) | bytes[12] ));
           if ((bytes[13] & 0x80) >> 7) {
-            p2_x -=  pow(2, 15); 
+            p2_x -= pow(2, 15);
           } else {
             p2_x = 0 - p2_x;
           }
@@ -635,11 +635,11 @@ uart:
           } else {
             p2_speed = 0 - p2_speed;
           }
-          int16_t p2_distance_resolution = (uint16_t((bytes[19] << 8) | bytes[18] )); 
+          int16_t p2_distance_resolution = (uint16_t((bytes[19] << 8) | bytes[18] ));
 
           int16_t p3_x = (uint16_t((bytes[21] << 8) | bytes[20] ));
           if ((bytes[21] & 0x80) >> 7) {
-            p3_x -=  pow(2, 15); 
+            p3_x -= pow(2, 15);
           } else {
             p3_x = 0 - p3_x;
           }
@@ -664,7 +664,7 @@ uart:
           float p1_angle = atan2(p1_y, p1_x) * RADIANS_TO_DEGREES;
           float p2_angle = atan2(p2_y, p2_x) * RADIANS_TO_DEGREES;
           float p3_angle = atan2(p3_y, p3_x) * RADIANS_TO_DEGREES;
-          
+
           float p1_distance = sqrt(p1_x * p1_x + p1_y * p1_y);
           float p2_distance = sqrt(p2_x * p2_x + p2_y * p2_y);
           float p3_distance = sqrt(p3_x * p3_x + p3_y * p3_y);
@@ -698,7 +698,7 @@ uart:
           int zone4_end_y_value = id(zone4_end_y).state;
 
           if (p1_distance > 0 && p1_distance <= max_distance) {
-            if(installation_angle != 0){
+            if (installation_angle != 0) {
               p1_x = p1_distance * cos((p1_angle - installation_angle)/RADIANS_TO_DEGREES);
               p1_y = p1_distance * sin((p1_angle - installation_angle)/RADIANS_TO_DEGREES);
             }
@@ -767,7 +767,7 @@ uart:
           }
 
           if (p2_distance > 0 && p2_distance <= max_distance) {
-            if(installation_angle != 0){
+            if (installation_angle != 0) {
               p2_x = p2_distance * cos((p2_angle - installation_angle)/RADIANS_TO_DEGREES);
               p2_y = p2_distance * sin((p2_angle - installation_angle)/RADIANS_TO_DEGREES);
             }
@@ -836,7 +836,7 @@ uart:
           }
 
           if (p3_distance > 0 && p3_distance <= max_distance) {
-            if(installation_angle != 0){
+            if (installation_angle != 0) {
               p3_x = p3_distance * cos((p3_angle - installation_angle)/RADIANS_TO_DEGREES);
               p3_y = p3_distance * sin((p3_angle - installation_angle)/RADIANS_TO_DEGREES);
             }
