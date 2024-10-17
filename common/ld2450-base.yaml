@@ -641,6 +641,8 @@ uart:
             if (duplicate_p1_count > MAX_DUPLICATE_READINGS) {
               p1_x = 0;
               p1_y = 0;
+              p1_speed = 0;
+              p1_distance_resolution = 0;
             }
           }
 
@@ -676,6 +678,8 @@ uart:
             if (duplicate_p2_count > MAX_DUPLICATE_READINGS) {
               p2_x = 0;
               p2_y = 0;
+              p2_speed = 0;
+              p2_distance_resolution = 0;
             }
           }
 
@@ -711,6 +715,8 @@ uart:
             if (duplicate_p3_count > MAX_DUPLICATE_READINGS) {
               p3_x = 0;
               p3_y = 0;
+              p3_speed = 0;
+              p3_distance_resolution = 0;
             }
           }
 
