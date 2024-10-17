@@ -787,10 +787,10 @@ uart:
           } else {
             p1_x = 0;
             p1_y = 0;
-            p1_speed = 0;
+            p1_speed = 0.0;
             p1_distance_resolution = 0;
-            p1_distance = 0;
-            p1_angle = 0;
+            p1_distance = 0.0;
+            p1_angle = 0.0;
           }
 
           ESP_LOGD("uart", "p2_x: %d, p2_y: %d, p2_speed: %f, p2_distance_resolution: %d, p2_distance: %f, p2_angle: %f", p2_x, p2_y, p2_speed, p2_distance_resolution, p2_distance, p2_angle);
@@ -822,10 +822,10 @@ uart:
           } else {
             p2_x = 0;
             p2_y = 0;
-            p2_speed = 0;
+            p2_speed = 0.0;
             p2_distance_resolution = 0;
-            p2_distance = 0;
-            p2_angle = 0;
+            p2_distance = 0.0;
+            p2_angle = 0.0;
           }
 
           ESP_LOGD("uart", "p3_x: %d, p3_y: %d, p3_speed: %f, p3_distance_resolution: %d, p3_distance: %f, p3_angle: %f", p3_x, p3_y, p3_speed, p3_distance_resolution, p3_distance, p3_angle);
@@ -857,10 +857,10 @@ uart:
           } else {
             p3_x = 0;
             p3_y = 0;
-            p3_speed = 0;
+            p3_speed = 0.0;
             p3_distance_resolution = 0;
-            p3_distance = 0;
-            p3_angle = 0;
+            p3_distance = 0.0;
+            p3_angle = 0.0;
           }
 
           if (id(target1_x).state != p1_x) {
