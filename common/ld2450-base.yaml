@@ -16,12 +16,6 @@ esphome:
           id: zone4_occupancy
           state: false
 
-globals:
-  - id: mmwave_update_time
-    type: unsigned long
-    restore_value: no
-    initial_value: '0'
-
 text_sensor:
   - platform: template
     disabled_by_default: True
@@ -591,10 +585,13 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
-          if ((millis() - id(mmwave_update_time)) <= 250) { 
+          static unsigned long mmwave_update_time = 0; 
+
+          unsigned long current_time = millis(); 
+          if ((current_time - mmwave_update_time) <= 250) { 
             return;
-          };
-          id(mmwave_update_time) = millis();
+          }
+          mmwave_update_time = current_time;
 
           int16_t p1_x = (uint16_t((bytes[5] << 8) | bytes[4] ));
           if ((bytes[5] & 0x80) >> 7) {
