@@ -811,9 +811,9 @@ uart:
             }
           }
 
-          float p1_angle = atan2(p1_y, p1_x);
-          float p2_angle = atan2(p2_y, p2_x);
-          float p3_angle = atan2(p3_y, p3_x);
+          float p1_angle = atan2(p1_y, p1_x) * RADIANS_TO_DEGREES;
+          float p2_angle = atan2(p2_y, p2_x) * RADIANS_TO_DEGREES;
+          float p3_angle = atan2(p3_y, p3_x) * RADIANS_TO_DEGREES;
 
           float p1_distance = sqrt(p1_x * p1_x + p1_y * p1_y);
           float p2_distance = sqrt(p2_x * p2_x + p2_y * p2_y);
@@ -822,7 +822,7 @@ uart:
           float max_distance = float(id(distance).state) * 10;
 
           // Extracted for consistency of read values
-          float installation_angle = int(id(installation_angle_ui).state) / RADIANS_TO_DEGREES;
+          float installation_angle = int(id(installation_angle_ui).state);
 
           int zone1_count = 0;
           int zone1_begin_x_value = id(zone1_begin_x).state;
@@ -852,7 +852,7 @@ uart:
           bool p1_active = false;
           if (p1_distance > 0 && p1_distance <= max_distance) {
             if (installation_angle != 0) {
-              float p1_adjusted_angle = p1_angle - installation_angle;
+              float p1_adjusted_angle = (p1_angle - installation_angle) / RADIANS_TO_DEGREES;
               p1_x = p1_distance * cos(p1_adjusted_angle);
               p1_y = p1_distance * sin(p1_adjusted_angle);
             }
@@ -874,7 +874,7 @@ uart:
             }
 
             p1_speed /= 100.0;
-            p1_angle = (p1_angle * RADIANS_TO_DEGREES) - 90;
+            p1_angle -= 90;
             p1_active = true;
           } else {
             p1_x = 0;
@@ -889,7 +889,7 @@ uart:
           bool p2_active = false;
           if (p2_distance > 0 && p2_distance <= max_distance) {
             if (installation_angle != 0) {
-              float p2_adjusted_angle = p2_angle - installation_angle;
+              float p2_adjusted_angle = (p2_angle - installation_angle) / RADIANS_TO_DEGREES;
               p2_x = p2_distance * cos(p2_adjusted_angle);
               p2_y = p2_distance * sin(p2_adjusted_angle);
             }
@@ -911,7 +911,7 @@ uart:
             }
 
             p2_speed /= 100.0;
-            p2_angle = (p2_angle * RADIANS_TO_DEGREES) - 90;
+            p2_angle -= 90;
             p2_active = true;
           } else {
             p2_x = 0;
@@ -926,7 +926,7 @@ uart:
           bool p3_active = false;
           if (p3_distance > 0 && p3_distance <= max_distance) {
             if (installation_angle != 0) {
-              float p3_adjusted_angle = p3_angle - installation_angle;
+              float p3_adjusted_angle = (p3_angle - installation_angle) / RADIANS_TO_DEGREES;
               p3_x = p3_distance * cos(p3_adjusted_angle);
               p3_y = p3_distance * sin(p3_adjusted_angle);
             }
@@ -948,7 +948,7 @@ uart:
             }
 
             p3_speed /= 100.0;
-            p3_angle = (p3_angle * RADIANS_TO_DEGREES) - 90;
+            p3_angle -= 90;
             p3_active = true;
           } else {
             p3_x = 0;
