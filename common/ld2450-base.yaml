@@ -2,6 +2,9 @@ esphome:
   on_boot:
     priority: -100
     then:
+      - wait_until:
+          condition:
+            lambda: return mmwave_initialised;
       - sensor.template.publish:
           id: target1_x
           state: 0
@@ -83,8 +86,13 @@ esphome:
       - binary_sensor.template.publish:
           id: zone4_occupancy
           state: false
-      - delay: 10s
       - button.press: get_mmwave_firmware
+
+globals:
+  - id: mmwave_initialised
+    type: bool
+    restore_value: no
+    initial_value: 'false'
 
 text_sensor:
   - platform: template
@@ -663,6 +671,12 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
+          // A bit of a hack but I haven't yet found a better way to determine if the sensor has finished initialisation
+          if (id(mmwave_initialised) == false) {
+            id(mmwave_initialised) = true;
+            return;
+          }
+
           static unsigned long mmwave_update_time = 0;
           static int16_t MAX_INT_16 = pow(2, 15); // This causes a warning because of the type conversion however the value is correct
           static float RADIANS_TO_DEGREES = 180.0 / 3.14159265358979323846;
