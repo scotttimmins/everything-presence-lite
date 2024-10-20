@@ -671,7 +671,7 @@ uart:
           // A bit of a hack but I haven't yet found a better way to determine if the sensor has finished initialisation
           if (id(mmwave_initialised) == false) {
             id(mmwave_initialised) = true;
-            return;
+            // return;
           }
 
           static unsigned long mmwave_update_time = 0;
