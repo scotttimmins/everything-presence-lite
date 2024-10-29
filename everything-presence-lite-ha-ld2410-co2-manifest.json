@@ -1,6 +1,6 @@
 {
   "name": "Everything Presence Lite HA LD2410 CO₂",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "home_assistant_domain": "esphome",
   "new_install_skip_erase": false,
   "builds": [
@@ -8,7 +8,7 @@
       "chipFamily": "ESP32",
       "ota": {
         "path": "everything-presence-lite-ha-ld2410-co2/everything-presence-lite-esp32.ota.bin",
-        "md5": "6b6392c091b5a92846ececa41988d611"
+        "md5": "5d2ff810403289487798726ca99bfd1b"
       },
       "parts": [
         {
