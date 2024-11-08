@@ -492,8 +492,8 @@ number:
     name: "Update Timeout"
     id: update_timeout
     max_value: 600000
-    min_value: 0
-    step: 10
+    min_value: 250
+    step: 250
     optimistic: True
     restore_value: True
     unit_of_measurement: "ms"
@@ -665,7 +665,6 @@ sensor:
     disabled_by_default: true
     unit_of_measurement: " "
 
-
 uart:
   id: uart_bus
   tx_pin: 
@@ -690,6 +689,11 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
+          if ((millis() - id(mmwave_update_time)) <= 250) {
+            return;
+          }
+          id(mmwave_update_time) = millis();
+
           int16_t p1_x = (uint16_t((bytes[5] << 8) | bytes[4] ));
           if ((bytes[5] & 0x80) >> 7) {
             p1_x -= pow(2, 15); 
@@ -949,7 +953,6 @@ uart:
           ) {
             return;
           }
-          id(mmwave_update_time) = millis();
 
           // Publish updated values
 
