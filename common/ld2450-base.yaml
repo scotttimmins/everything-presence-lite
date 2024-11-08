@@ -642,11 +642,6 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
-          if ((millis() - id(mmwave_update_time)) <= id(update_timeout).state) { 
-            return;
-          };
-          id(mmwave_update_time) = millis();
-
           int16_t p1_x = (uint16_t((bytes[5] << 8) | bytes[4] ));
           if ((bytes[5] & 0x80) >> 7) {
             p1_x -= pow(2, 15); 
@@ -889,6 +884,25 @@ uart:
             p3_active = false;
           }
 
+          // Exit if update timeout has not been reached and no occupancy changes have occured
+          bool zone1_occupancy_value = zone1_count > 0;
+          bool zone2_occupancy_value = zone2_count > 0;
+          bool zone3_occupancy_value = zone3_count > 0;
+          bool zone4_occupancy_value = zone4_count > 0;
+          bool occupancy_value = targets_detected > occupancy_mask_1_count;
+
+          if (
+            (millis() - id(mmwave_update_time)) <= id(update_timeout).state && 
+            (id(zone1_occupancy).state == zone1_occupancy_value) &&
+            (id(zone2_occupancy).state == zone2_occupancy_value) &&
+            (id(zone3_occupancy).state == zone3_occupancy_value) &&
+            (id(zone4_occupancy).state == zone4_occupancy_value) &&
+            (id(occupancy).state == occupancy_value)
+          ) {
+            return;
+          }
+          id(mmwave_update_time) = millis();
+
           // Publish updated values
 
           if (id(target1_x).state != p1_x) {
@@ -957,37 +971,36 @@ uart:
             id(target3_active).publish_state(p3_active);
           }
 
-
-          if (id(zone1_occupancy).state != zone1_count > 0) {
-            id(zone1_occupancy).publish_state(zone1_count > 0);
+          if (id(zone1_occupancy).state != zone1_occupancy_value) {
+            id(zone1_occupancy).publish_state(zone1_occupancy_value);
           }
           if (id(zone1_target_count).state != zone1_count) {
             id(zone1_target_count).publish_state(zone1_count);
           }
 
-          if (id(zone2_occupancy).state != zone2_count > 0) {
-            id(zone2_occupancy).publish_state(zone2_count > 0);
+          if (id(zone2_occupancy).state != zone2_occupancy_value) {
+            id(zone2_occupancy).publish_state(zone2_occupancy_value);
           }
           if (id(zone2_target_count).state != zone2_count) {
             id(zone2_target_count).publish_state(zone2_count);
           }
 
-          if (id(zone3_occupancy).state != zone3_count > 0) {
-            id(zone3_occupancy).publish_state(zone3_count > 0);
+          if (id(zone3_occupancy).state != zone3_occupancy_value) {
+            id(zone3_occupancy).publish_state(zone3_occupancy_value);
           }
           if (id(zone3_target_count).state != zone3_count) {
             id(zone3_target_count).publish_state(zone3_count);
           }
 
-          if (id(zone4_occupancy).state != zone4_count > 0) {
-            id(zone4_occupancy).publish_state(zone4_count > 0);
+          if (id(zone4_occupancy).state != zone4_occupancy_value) {
+            id(zone4_occupancy).publish_state(zone4_occupancy_value);
           }
           if (id(zone4_target_count).state != zone4_count) {
             id(zone4_target_count).publish_state(zone4_count);
           }
 
-          if (id(occupancy).state != targets_detected > occupancy_mask_1_count) {
-            id(occupancy).publish_state(targets_detected > occupancy_mask_1_count);
+          if (id(occupancy).state != occupancy_value) {
+            id(occupancy).publish_state(occupancy_value);
           }
           if (id(occupancy_mask_1_target_count).state != occupancy_mask_1_count) {
             id(occupancy_mask_1_target_count).publish_state(occupancy_mask_1_count);
