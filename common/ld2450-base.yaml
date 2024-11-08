@@ -452,6 +452,16 @@ number:
     step: 10
     optimistic: True
     restore_value: True
+  - platform: template
+    name: "Update Timeout"
+    id: update_timeout
+    max_value: 600000
+    min_value: 0
+    step: 10
+    optimistic: True
+    restore_value: True
+    unit_of_measurement: "ms"
+    initial_value: 250
 
 sensor:
   - platform: template
@@ -632,7 +642,7 @@ uart:
     sequence:
       # - lambda: UARTDebug::log_hex(direction, bytes, ' ');
       - lambda: |-
-          if ((millis() - id(mmwave_update_time)) <= 250) { 
+          if ((millis() - id(mmwave_update_time)) <= id(update_timeout).state) { 
             return;
           };
           id(mmwave_update_time) = millis();
