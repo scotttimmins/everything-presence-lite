@@ -36,7 +36,6 @@ binary_sensor:
     has_still_target:
       name: Sensor 1 Still Target
   - platform: gpio
-    ld2410_id: ld2410_1
     pin: 17
     name: Sensor 1 Occupancy
     device_class: Occupancy
@@ -50,7 +49,6 @@ binary_sensor:
     has_still_target:
       name: Sensor 2 Still Target
   - platform: gpio
-    ld2410_id: ld2410_2 
     pin: 25
     name: Sensor 2 Occupancy
     device_class: Occupancy
