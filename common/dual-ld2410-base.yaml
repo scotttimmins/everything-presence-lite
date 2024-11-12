@@ -21,10 +21,10 @@ uart:
 ld2410:
   - id: ld2410_1
     uart_id: sensor1
-    update_interval: 1s
+    throttle : 250ms
   - id: ld2410_2
     uart_id: sensor2
-    update_interval: 1s
+    throttle : 250ms
 
 binary_sensor:
   - platform: ld2410
