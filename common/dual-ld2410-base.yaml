@@ -1,0 +1,381 @@
+esphome:
+  on_boot:
+    then:
+      - switch.turn_on: engineering_mode_1
+      - switch.turn_on: engineering_mode_2
+
+uart:
+  - id: sensor1
+    baud_rate: 256000
+    rx_pin: 18
+    tx_pin: 19
+    parity: NONE
+    stop_bits: 1
+  - id: sensor2
+    baud_rate: 256000
+    rx_pin: 32
+    tx_pin: 26
+    parity: NONE
+    stop_bits: 1
+
+ld2410:
+  - id: ld2410_1
+    uart_id: sensor1
+    update_interval: 1s
+  - id: ld2410_2
+    uart_id: sensor2
+    update_interval: 1s
+
+binary_sensor:
+  - platform: ld2410
+    ld2410_id: ld2410_1
+    has_target:
+      name: Sensor 1 Occupancy
+    has_moving_target:
+      name: Sensor 1 Moving Target
+    has_still_target:
+      name: Sensor 1 Still Target
+  - platform: gpio
+    ld2410_id: ld2410_1
+    pin: 17
+    name: Sensor 1 Occupancy
+    device_class: Occupancy
+
+  - platform: ld2410
+    ld2410_id: ld2410_2
+    has_target:
+      name: Sensor 2 Occupancy
+    has_moving_target:
+      name: Sensor 2 Moving Target
+    has_still_target:
+      name: Sensor 2 Still Target
+  - platform: gpio
+    ld2410_id: ld2410_2 
+    pin: 25
+    name: Sensor 2 Occupancy
+    device_class: Occupancy
+
+sensor:
+  - platform: ld2410
+    ld2410_id: ld2410_1
+    light:
+      name: Sensor 1 mmWave Light
+      disabled_by_default: true
+    moving_distance:
+      name: Sensor 1 Moving Target Distance
+    still_distance:
+      name: Sensor 1 Still Target Distance
+    moving_energy:
+      name: Sensor 1 Moveing Target Energy
+    still_energy:
+      name: Sensor 1 Still Target Energy
+    detection_distance:
+      name: Sensor 1 Detection Distance
+    g0:
+      move_energy:
+        name: Sensor 1 Gate 0 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 0 Still Energy
+    g1:
+      move_energy:
+        name: Sensor 1 Gate 1 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 1 Still Energy
+    g2:
+      move_energy:
+        name: Sensor 1 Gate 2 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 2 Still Energy
+    g3:
+      move_energy:
+        name: Sensor 1 Gate 3 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 3 Still Energy
+    g4:
+      move_energy:
+        name: Sensor 1 Gate 4 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 4 Still Energy
+    g5:
+      move_energy:
+        name: Sensor 1 Gate 5 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 5 Still Energy
+    g6:
+      move_energy:
+        name: Sensor 1 Gate 6 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 6 Still Energy
+    g7:
+      move_energy:
+        name: Sensor 1 Gate 7 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 7 Still Energy
+    g8:
+      move_energy:
+        name: Sensor 1 Gate 8 Movement Energy
+      still_energy:
+        name: Sensor 1 Gate 8 Still Energy
+
+  - platform: ld2410
+    ld2410_id: ld2410_2
+    light:
+      name: Sensor 2 mmWave Light
+      disabled_by_default: true
+    moving_distance:
+      name: Sensor 2 Moving Target Distance
+    still_distance:
+      name: Sensor 2 Still Target Distance
+    moving_energy:
+      name: Sensor 2 Moveing Target Energy
+    still_energy:
+      name: Sensor 2 Still Target Energy
+    detection_distance:
+      name: Sensor 2 Detection Distance
+    g0:
+      move_energy:
+        name: Sensor 2 Gate 0 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 0 Still Energy
+    g1:
+      move_energy:
+        name: Sensor 2 Gate 1 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 1 Still Energy
+    g2:
+      move_energy:
+        name: Sensor 2 Gate 2 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 2 Still Energy
+    g3:
+      move_energy:
+        name: Sensor 2 Gate 3 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 3 Still Energy
+    g4:
+      move_energy:
+        name: Sensor 2 Gate 4 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 4 Still Energy
+    g5:
+      move_energy:
+        name: Sensor 2 Gate 5 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 5 Still Energy
+    g6:
+      move_energy:
+        name: Sensor 2 Gate 6 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 6 Still Energy
+    g7:
+      move_energy:
+        name: Sensor 2 Gate 7 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 7 Still Energy
+    g8:
+      move_energy:
+        name: Sensor 2 Gate 8 Movement Energy
+      still_energy:
+        name: Sensor 2 Gate 8 Still Energy
+
+switch:
+  - platform: ld2410
+    ld2410_id : ld2410_1
+    engineering_mode:
+      name: "Sensor 1 Engineering Mode"
+      id: "engineering_mode_1"
+    bluetooth:
+      name: "Sensor 1 mmWave Bluetooth"
+      disabled_by_default: true
+  - platform: ld2410
+    ld2410_id : ld2410_2
+    engineering_mode:
+      name: "Sensor 2 Engineering Mode"
+      id: "engineering_mode_2"
+    bluetooth:
+      name: "Sensor 2 mmWave Bluetooth"
+      disabled_by_default: true
+
+number:
+  - platform: ld2410
+    ld2410_id : ld2410_1
+    timeout:
+      name: Sensor 1 Occupancy Off Delay
+    light_threshold:
+      name: Sensor 1 mmWave Light Threshold
+      disabled_by_default: True
+    max_move_distance_gate:
+      name: Sensor 1 Max Movement Distance Gate
+    max_still_distance_gate:
+      name: Sensor 1 Max Still Distance Gate
+    g0:
+      move_threshold:
+        name: Sensor 1 Gate 0 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 0 Still Sensitivity
+    g1:
+      move_threshold:
+        name: Sensor 1 Gate 1 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 1 Still Sensitivity
+    g2:
+      move_threshold:
+        name: Sensor 1 Gate 2 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 2 Still Sensitivity
+    g3:
+      move_threshold:
+        name: Sensor 1 Gate 3 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 3 Still Sensitivity
+    g4:
+      move_threshold:
+        name: Sensor 1 Gate 4 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 4 Still Sensitivity
+    g5:
+      move_threshold:
+        name: Sensor 1 Gate 5 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 5 Still Sensitivity
+    g6:
+      move_threshold:
+        name: Sensor 1 Gate 6 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 6 Still Sensitivity
+    g7:
+      move_threshold:
+        name: Sensor 1 Gate 7 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 7 Still Sensitivity
+    g8:
+      move_threshold:
+        name: Sensor 1 Gate 8 Movement Sensitivity
+      still_threshold:
+        name: Sensor 1 Gate 8 Still Sensitivity
+  - platform: ld2410
+    ld2410_id : ld2410_2
+    timeout:
+      name: Sensor 2 Occupancy Off Delay
+    light_threshold:
+      name: Sensor 2 mmWave Light Threshold
+      disabled_by_default: True
+    max_move_distance_gate:
+      name: Sensor 2 Max Movement Distance Gate
+    max_still_distance_gate:
+      name: Sensor 2 Max Still Distance Gate
+    g0:
+      move_threshold:
+        name: Sensor 2 Gate 0 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 0 Still Sensitivity
+    g1:
+      move_threshold:
+        name: Sensor 2 Gate 1 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 1 Still Sensitivity
+    g2:
+      move_threshold:
+        name: Sensor 2 Gate 2 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 2 Still Sensitivity
+    g3:
+      move_threshold:
+        name: Sensor 2 Gate 3 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 3 Still Sensitivity
+    g4:
+      move_threshold:
+        name: Sensor 2 Gate 4 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 4 Still Sensitivity
+    g5:
+      move_threshold:
+        name: Sensor 2 Gate 5 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 5 Still Sensitivity
+    g6:
+      move_threshold:
+        name: Sensor 2 Gate 6 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 6 Still Sensitivity
+    g7:
+      move_threshold:
+        name: Sensor 2 Gate 7 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 7 Still Sensitivity
+    g8:
+      move_threshold:
+        name: Sensor 2 Gate 8 Movement Sensitivity
+      still_threshold:
+        name: Sensor 2 Gate 8 Still Sensitivity
+
+button:
+  - platform: ld2410
+    ld2410_id : ld2410_1
+    factory_reset:
+      name: "Sensor 1 Factory Reset mmWave"
+      disabled_by_default: true
+    restart:
+      name: "Sensor 1 Restart mmWave"
+      disabled_by_default: true
+    query_params:
+      name: Sensor 1 Get Values
+      disabled_by_default: true
+  - platform: ld2410
+    ld2410_id : ld2410_2
+    factory_reset:
+      name: "Sensor 2 Factory Reset mmWave"
+      disabled_by_default: true
+    restart:
+      name: "Sensor 2 Restart mmWave"
+      disabled_by_default: true
+    query_params:
+      name: Sensor 2 Get Values
+      disabled_by_default: true
+
+text_sensor:
+  - platform: ld2410
+    ld2410_id : ld2410_1
+    version:
+      name: "Sensor 1 mmWave Firmware Version"
+    mac_address:
+      name: "Sensor 1 mmWave MAC Address"
+      disabled_by_default: true
+  - platform: ld2410
+    ld2410_id : ld2410_2
+    version:
+      name: "Sensor 2 mmWave Firmware Version"
+    mac_address:
+      name: "Sensor 2 mmWave MAC Address"
+      disabled_by_default: true
+
+select:
+  - platform: ld2410
+    ld2410_id : ld2410_1
+    distance_resolution:
+      name: "Sensor 1 Distance Gate Resolution"
+      disabled_by_default: true
+    baud_rate:
+      name: "Sensor 1 mmWave Sensor Baud Rate"
+      disabled_by_default: true
+    light_function:
+      name: Sensor 1 mmWave Light Function
+      disabled_by_default: true
+    out_pin_level:
+      name: Sensor 1 GPIO Pin Level
+      disabled_by_default: true
+  - platform: ld2410
+    ld2410_id : ld2410_2
+    distance_resolution:
+      name: "Sensor 2 Distance Gate Resolution"
+      disabled_by_default: true
+    baud_rate:
+      name: "Sensor 2 mmWave Sensor Baud Rate"
+      disabled_by_default: true
+    light_function:
+      name: Sensor 2 mmWave Light Function
+      disabled_by_default: true
+    out_pin_level:
+      name: Sensor 2 GPIO Pin Level
+      disabled_by_default: true
