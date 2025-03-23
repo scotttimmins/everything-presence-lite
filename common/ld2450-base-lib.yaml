@@ -829,9 +829,7 @@ uart:
             if (id(target1_angle).state != p1_angle) {
               id(target1_angle).publish_state(p1_angle);
             }
-            if (id(target1_active).state != true) {
-              id(target1_active).publish_state(true);
-            }
+            id(target1_active).publish_state(true);
           } else {
             if (id(target1_x).state != 0) {
               id(target1_x).publish_state(0);
@@ -851,9 +849,7 @@ uart:
             if (id(target1_angle).state != 0) {
               id(target1_angle).publish_state(0);
             }
-            if (id(target1_active).state != false) {
-              id(target1_active).publish_state(false);
-            }
+            id(target1_active).publish_state(false);
           }
 
           if (p2_distance > 0 && p2_distance <= max_distance) {
@@ -935,9 +931,7 @@ uart:
             if (id(target2_angle).state != p2_angle) {
               id(target2_angle).publish_state(p2_angle);
             }
-            if (id(target2_active).state != true) {
-              id(target2_active).publish_state(true);
-            }
+            id(target2_active).publish_state(true);
           } else {
             if (id(target2_x).state != 0) {
               id(target2_x).publish_state(0);
@@ -957,9 +951,7 @@ uart:
             if (id(target2_angle).state != 0) {
               id(target2_angle).publish_state(0);
             }
-            if (id(target2_active).state != false) {
-              id(target2_active).publish_state(false);
-            }
+            id(target2_active).publish_state(false);
           }
 
           if (p3_distance > 0 && p3_distance <= max_distance) {
@@ -1035,9 +1027,7 @@ uart:
             if (id(target3_angle).state != p3_angle) {
               id(target3_angle).publish_state(p3_angle);
             }
-            if (id(target3_active).state != true) {
-              id(target3_active).publish_state(true);
-            }
+            id(target3_active).publish_state(true);
           } else {
             if (id(target3_x).state != 0) {
               id(target3_x).publish_state(0);
@@ -1057,9 +1047,7 @@ uart:
             if (id(target3_angle).state != 0) {
               id(target3_angle).publish_state(0);
             }
-            if (id(target3_active).state != false) {
-              id(target3_active).publish_state(false);
-            }
+            id(target3_active).publish_state(false);
           }
 
           if (targets_detected > occupancy_mask_1_count) {
