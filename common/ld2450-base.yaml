@@ -356,7 +356,7 @@ number:
     name: "Installation Angle Vertical"
     id: installation_angle_y_ui
     unit_of_measurement: "º"
-    min_value: -45
+    min_value: 0
     max_value: 45
     step: 1
     update_interval: never
