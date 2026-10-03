@@ -365,6 +365,44 @@ number:
     initial_value: 0
     icon: "mdi:angle-acute"
     entity_category: config
+  - platform: template
+    name: "Tracking Scale"
+    id: tracking_scale
+    min_value: 0.5
+    max_value: 2
+    step: 0.01
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    initial_value: 1
+    icon: "mdi:resize"
+    entity_category: config
+  - platform: template
+    name: "Tracking Offset X"
+    id: tracking_offset_x
+    unit_of_measurement: "mm"
+    min_value: -1000
+    max_value: 1000
+    step: 1
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    initial_value: 0
+    icon: "mdi:arrow-left-right"
+    entity_category: config
+  - platform: template
+    name: "Tracking Offset Y"
+    id: tracking_offset_y
+    unit_of_measurement: "mm"
+    min_value: -1000
+    max_value: 1000
+    step: 1
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    initial_value: 0
+    icon: "mdi:arrow-up-down"
+    entity_category: config
 
   - platform: template
     name: "Exit Threshold Pct"
@@ -1054,6 +1092,10 @@ uart:
           float max_distance = float(id(distance).state) * 10;
           float installation_angle_x = id(installation_angle_ui).state * DEGREES_TO_RADIANS;
           float installation_angle_y = id(installation_angle_y_ui).state * DEGREES_TO_RADIANS;
+          // Post-rotation correction (scale, then mm offset) to align reported targets with drawn polygons.
+          float adj_scale = id(tracking_scale).state;
+          float adj_x = id(tracking_offset_x).state;
+          float adj_y = id(tracking_offset_y).state;
 
           static unsigned long assumed_present_until = 0;
           static bool prev_detected[3] = {false,false,false};
@@ -1119,6 +1161,8 @@ uart:
                 p1_x = p1_distance * cos(angle);
                 p1_y = p1_distance * sin(angle);
               }
+              p1_x = p1_x * adj_scale + adj_x;
+              p1_y = p1_y * adj_scale + adj_y;
               if (point_in_poly(p1_x, p1_y, id(poly_exclusion_1_points))) {
                 occupancy_mask_1_count++;
                 p1_detected = false;
@@ -1246,6 +1290,8 @@ uart:
                 p2_x = p2_distance * cos(angle);
                 p2_y = p2_distance * sin(angle);
               }
+              p2_x = p2_x * adj_scale + adj_x;
+              p2_y = p2_y * adj_scale + adj_y;
               if (point_in_poly(p2_x, p2_y, id(poly_exclusion_1_points))) {
                 occupancy_mask_1_count++;
                 p2_detected = false;
@@ -1360,6 +1406,8 @@ uart:
                 p3_x = p3_distance * cos(angle);
                 p3_y = p3_distance * sin(angle);
               }
+              p3_x = p3_x * adj_scale + adj_x;
+              p3_y = p3_y * adj_scale + adj_y;
               if (point_in_poly(p3_x, p3_y, id(poly_exclusion_1_points))) {
                 occupancy_mask_1_count++;
                 p3_detected = false;
