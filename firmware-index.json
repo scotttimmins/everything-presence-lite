@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-06-21T13:51:15.546Z",
+  "generatedAt": "2026-10-03T16:50:38.936Z",
   "product": {
     "id": "everything-presence-lite",
     "displayName": "Everything Presence Lite",
@@ -10,7 +10,7 @@
     {
       "version": "1.5.0",
       "channel": "stable",
-      "releaseDate": "2026-06-21",
+      "releaseDate": "2026-10-03",
       "releaseNotes": "",
       "minPreviousVersion": "1.0.0",
       "variants": [
